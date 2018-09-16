@@ -1,0 +1,29 @@
+{
+  "name": "homework-01-linting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "01-chart.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix src/*.js",
+    "prettier": "prettier --write src/*.js",
+    "build": "parcel build src/index.html --out-dir docs --public-url /storytelling-first-homework",
+    "serve": "parcel src/index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^1.9.7"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "prettier": "^1.14.2"
+  }
+}
