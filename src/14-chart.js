@@ -6,37 +6,45 @@
       console.log("Failed with", err);
     });
 
-  var width = 600;
-  var height = 700;
+var margin = { top: 30, left: 30, right: 30, bottom: 30 }
+
+var height = 700 - margin.top - margin.bottom
+var width = 600 - margin.left - margin.right
 
   var svg = d3
     .select("#chart14")
-    .append("svg")
-    .attr("height", height)
-    .attr("width", width)
-    .append("g")
-    .attr("transform", "translate(25, 25)");
+    .append('svg')
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('width', width + margin.left + margin.right)
+    .append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+  let xPositionScale = d3
+    .scaleBand()
+    .domain(["Stevie", "Nicholas", "Bubbletree", "Particle", "Jumpup", "Parlay", "Hio"])
+    .range([0, width]);
+
+  let yPositionScale = d3
+  .scaleLinear()
+  .domain([0, 12])
+  .range([height, 0])
+
 
   const heightScale = d3
     .scaleLinear()
     .domain([0, 12])
-    .range([600, 0]);
+    .range([height, 0]);
 
   const colorScale = d3
     .scaleOrdinal()
     .range(["blue", "red", "green", "purple", "pink"]);
 
   function ready(datapoints) {
-    console.log("Data is", datapoints);
+    //console.log("Data is", datapoints);
 
     var names = datapoints.map(function(d) {
       return d.name;
     });
-
-    var xScale = d3
-      .scaleBand()
-      .domain(names)
-      .range([0, 600]);
 
     svg
       .selectAll("rect")
@@ -45,21 +53,38 @@
       .append("rect")
       .attr("width", 50)
       .attr("height", function(d, i) {
-        return height - heightScale(d.hamburgers);
+        return height - yPositionScale(d.hamburgers);
       })
-      .attr("fill", function(d) {
+      .attr("fill", function(d, i) {
         return colorScale(d.animal);
       })
       .attr("x", function(d, i) {
-        return xScale(d.name);
+        return xPositionScale(d.name);
+      })
+      .attr("y", function(d, i) {
+        return yPositionScale(d.hamburgers);
       })
       .attr("opacity", 0.5);
-    // attr("y",600)
+
+      /* Set up axes */
+     const xAxis = d3.axisBottom(xPositionScale)
+      svg
+        .append('g')
+        .attr('class', 'axis x-axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis)
+
+      const yAxis = d3.axisLeft(yPositionScale)
+      svg
+        .append('g')
+        .attr('class', 'axis y-axis')
+        .call(yAxis)
+      
 
     svg
       .append("text")
-      .attr("x", 250)
+      .attr("x", 100)
       .attr("y", -10)
-      .text("animals");
+      .text("How many hamburgers do these pet animals eat?");
   }
 })();
